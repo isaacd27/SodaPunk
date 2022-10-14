@@ -8,7 +8,7 @@ public class TowerSensor : MonoBehaviour
 
     public float angle;
 
-    Object trueTarget;
+   EnemyController trueTarget;
 
     public LayerMask targetMask;
     public LayerMask obstructionMask;
@@ -40,7 +40,7 @@ public class TowerSensor : MonoBehaviour
     private void FieldOfViewCheck()
     {
         Collider[] rangechecks = Physics.OverlapSphere(transform.position, radius, targetMask);
-        Object[] objectist = new Object[rangechecks.Length];
+        EnemyController[] objectist = new EnemyController[rangechecks.Length];
 
         for (int i = 0; i < rangechecks.Length - 1; i++)
         {
@@ -48,7 +48,7 @@ public class TowerSensor : MonoBehaviour
             {
                 if (c.gameObject.GetComponent<EnemyController>() != null)
                 {
-                    objectist[i] = c.gameObject.GetComponent<Object>();
+                    objectist[i] = c.gameObject.GetComponent<EnemyController>();
                 }
                 else
                 {
@@ -57,17 +57,16 @@ public class TowerSensor : MonoBehaviour
             }
         }
         prevpriority = 0;
-        Object target = null;
+        EnemyController target = null;
 
         for (int i = 0; i < rangechecks.Length - 1; i++)
         {
             if (objectist[i] != null)
             {
-                if (objectist[i].GetPriority() > prevpriority)
-                {
-                    prevpriority = objectist[i].GetPriority();
+                
+                    //prevpriority = objectist[i].GetPriority();
                     target = objectist[i];
-                }
+                
             }
         }
 
@@ -75,12 +74,12 @@ public class TowerSensor : MonoBehaviour
         setTar(target);
     }
 
-    void setTar(Object o)
+    void setTar(EnemyController o)
     {
         trueTarget = o;
     }
 
-    public Object getTar()
+    public EnemyController getTar()
     {
         return trueTarget;
     }
